@@ -66,7 +66,7 @@ class _WeatherPageState extends State<WeatherPage> {
                               yumemiWeather.fetchSimpleWeather();
 
                           setState(() {
-                            _weatherSvg = WeatherSvg.values.byName(
+                            _weatherSvg = WeatherSvg.fromString(
                               weatherCondition,
                             );
                           });
