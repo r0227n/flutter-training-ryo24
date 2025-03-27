@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_training/ui/mixins/widgets_binding_frame.dart';
 import 'package:flutter_training/ui/weather/widgets/weather_page.dart';
 
 void main() {
@@ -22,14 +23,7 @@ class LaunchPage extends StatefulWidget {
   State<LaunchPage> createState() => _LaunchPageState();
 }
 
-class _LaunchPageState extends State<LaunchPage> {
-  @override
-  void initState() {
-    super.initState();
-
-    unawaited(WidgetsBinding.instance.endOfFrame.then((_) => _goWeatherPage()));
-  }
-
+class _LaunchPageState extends State<LaunchPage> with WidgetsBindingFrame {
   Future<void> _goWeatherPage() async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     if (!mounted) {
@@ -40,6 +34,11 @@ class _LaunchPageState extends State<LaunchPage> {
     ).push<void>(MaterialPageRoute(builder: (context) => const WeatherPage()));
 
     await _goWeatherPage();
+  }
+
+  @override
+  void didEndOfFrameAction() {
+    unawaited(_goWeatherPage());
   }
 
   @override
