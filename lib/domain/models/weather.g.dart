@@ -23,16 +23,16 @@ Map<String, dynamic> _$InputWeatherForecastToJson(
 const _$WeatherAreaEnumMap = {WeatherArea.tokyo: 'tokyo'};
 
 _Weather _$WeatherFromJson(Map<String, dynamic> json) => _Weather(
-  weatherCondition: $enumDecode(_$WeatherSvgEnumMap, json['weatherCondition']),
-  maxTemperature: (json['maxTemperature'] as num).toInt(),
-  minTemperature: (json['minTemperature'] as num).toInt(),
+  weatherCondition: $enumDecode(_$WeatherSvgEnumMap, json['weather_condition']),
+  maxTemperature: (json['max_temperature'] as num).toInt(),
+  minTemperature: (json['min_temperature'] as num).toInt(),
   date: DateTime.parse(json['date'] as String),
 );
 
 Map<String, dynamic> _$WeatherToJson(_Weather instance) => <String, dynamic>{
-  'weatherCondition': _$WeatherSvgEnumMap[instance.weatherCondition]!,
-  'maxTemperature': instance.maxTemperature,
-  'minTemperature': instance.minTemperature,
+  'weather_condition': _$WeatherSvgEnumMap[instance.weatherCondition]!,
+  'max_temperature': instance.maxTemperature,
+  'min_temperature': instance.minTemperature,
   'date': instance.date.toIso8601String(),
 };
 
