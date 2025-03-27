@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/ui/core/themes/weather/widgets/weather_icon.dart';
 import 'package:flutter_training/ui/core/themes/weather_svg.dart';
+import 'package:flutter_training/ui/weather/widgets/weather_icon.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class WeatherPage extends StatefulWidget {
@@ -54,7 +54,9 @@ class _WeatherPageState extends State<WeatherPage> {
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                         child: const Text('Close'),
                       ),
                     ),
