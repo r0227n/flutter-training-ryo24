@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_training/domain/use_case/weather/weather_forecast_use_case.dart';
 import 'package:flutter_training/ui/core/themes/weather_svg.dart';
+import 'package:flutter_training/ui/core/ui/result_dialog.dart';
 import 'package:flutter_training/ui/weather/widgets/weather_icon.dart';
-import 'package:yumemi_weather/yumemi_weather.dart';
+import 'package:flutter_training/utils/result.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -12,6 +15,7 @@ class WeatherPage extends StatefulWidget {
 
 class _WeatherPageState extends State<WeatherPage> {
   WeatherSvg? _weatherSvg;
+  final _weatherUseCase = WeatherForecastUseCase();
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +67,24 @@ class _WeatherPageState extends State<WeatherPage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          final yumemiWeather = YumemiWeather();
-                          final weatherCondition =
-                              yumemiWeather.fetchSimpleWeather();
+                          final weatherCondition = _weatherUseCase.getWeather();
 
-                          setState(() {
-                            _weatherSvg = WeatherSvg.fromString(
-                              weatherCondition,
-                            );
-                          });
+                          switch (weatherCondition) {
+                            case Ok<String>():
+                              setState(() {
+                                _weatherSvg = WeatherSvg.fromString(
+                                  weatherCondition.success,
+                                );
+                              });
+                            case Error<String>():
+                              unawaited(
+                                ResultDialog.show(
+                                  context: context,
+                                  title: 'title',
+                                  result: weatherCondition,
+                                ),
+                              );
+                          }
                         },
                         child: const Text('Reload'),
                       ),
