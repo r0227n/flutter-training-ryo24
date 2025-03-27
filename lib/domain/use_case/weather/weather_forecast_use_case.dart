@@ -1,7 +1,16 @@
 import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_training/domain/models/weather.dart';
 import 'package:flutter_training/utils/result.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
+
+part 'weather_forecast_use_case.g.dart';
+
+@riverpod
+WeatherForecastUseCase weatherForecastUseCase(Ref ref) {
+  return WeatherForecastUseCase();
+}
 
 class WeatherForecastUseCase {
   final _yumemiWeather = YumemiWeather();

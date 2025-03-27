@@ -12,15 +12,15 @@ class WeatherViewModel extends _$WeatherViewModel {
     return null;
   }
 
-  final _weatherUseCase = WeatherForecastUseCase();
-
   void updateWeather({WeatherArea area = WeatherArea.tokyo, DateTime? date}) {
     final input = InputWeatherForecast(
       area: area,
       date: date ?? DateTime.now(),
     );
 
-    final weatherCondition = _weatherUseCase.getWeather(input);
+    final weatherCondition = ref
+        .read(weatherForecastUseCaseProvider)
+        .getWeather(input);
 
     switch (weatherCondition) {
       case Success<Weather, Exception>():
