@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_training/domain/models/weather.dart';
 import 'package:flutter_training/domain/use_case/weather/weather_forecast_use_case.dart';
-import 'package:flutter_training/ui/core/themes/weather_svg.dart';
 import 'package:flutter_training/ui/core/ui/result_dialog.dart';
 import 'package:flutter_training/ui/weather/widgets/weather_icon.dart';
 import 'package:flutter_training/utils/result.dart';
@@ -14,7 +14,7 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  WeatherSvg? _weatherSvg;
+  Weather? _weather;
   final _weatherUseCase = WeatherForecastUseCase();
 
   @override
@@ -26,14 +26,17 @@ class _WeatherPageState extends State<WeatherPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AspectRatio(aspectRatio: 1, child: WeatherIcon(svg: _weatherSvg)),
+              AspectRatio(
+                aspectRatio: 1,
+                child: WeatherIcon(svg: _weather?.weatherCondition),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        '** ℃',
+                        '${_weather?.minTemperature ?? '**'} ℃',
                         textAlign: TextAlign.center,
                         style: Theme.of(
                           context,
@@ -42,7 +45,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     ),
                     Expanded(
                       child: Text(
-                        '** ℃',
+                        '${_weather?.maxTemperature ?? '**'} ℃',
                         textAlign: TextAlign.center,
                         style: Theme.of(
                           context,
@@ -67,16 +70,19 @@ class _WeatherPageState extends State<WeatherPage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          final weatherCondition = _weatherUseCase.getWeather();
+                          final weatherCondition = _weatherUseCase.getWeather(
+                            InputWeatherForecast(
+                              area: WeatherArea.tokyo,
+                              date: DateTime.parse('2020-04-01T12:00:00+09:00'),
+                            ),
+                          );
 
                           switch (weatherCondition) {
-                            case Ok<String>():
+                            case Success<Weather, Exception>():
                               setState(() {
-                                _weatherSvg = WeatherSvg.fromString(
-                                  weatherCondition.success,
-                                );
+                                _weather = weatherCondition.success;
                               });
-                            case Error<String>():
+                            case Error<Weather, Exception>():
                               unawaited(
                                 ResultDialog.show(
                                   context: context,

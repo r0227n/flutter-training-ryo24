@@ -13,7 +13,7 @@ part of 'result.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$Result<T> {
+mixin _$Result<T,E extends Exception> {
 
 
 
@@ -21,7 +21,7 @@ mixin _$Result<T> {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Result<T>);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Result<T, E>);
 }
 
 
@@ -30,23 +30,23 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'Result<$T>()';
+  return 'Result<$T, $E>()';
 }
 
 
 }
 
 /// @nodoc
-class $ResultCopyWith<T,$Res>  {
-$ResultCopyWith(Result<T> _, $Res Function(Result<T>) __);
+class $ResultCopyWith<T,E extends Exception,$Res>  {
+$ResultCopyWith(Result<T, E> _, $Res Function(Result<T, E>) __);
 }
 
 
 /// @nodoc
 
 
-class Ok<T> implements Result<T> {
-  const Ok(this.success);
+class Success<T,E extends Exception> implements Result<T, E> {
+  const Success(this.success);
   
 
  final  T success;
@@ -55,13 +55,13 @@ class Ok<T> implements Result<T> {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$OkCopyWith<T, Ok<T>> get copyWith => _$OkCopyWithImpl<T, Ok<T>>(this, _$identity);
+$SuccessCopyWith<T, E, Success<T, E>> get copyWith => _$SuccessCopyWithImpl<T, E, Success<T, E>>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Ok<T>&&const DeepCollectionEquality().equals(other.success, success));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Success<T, E>&&const DeepCollectionEquality().equals(other.success, success));
 }
 
 
@@ -70,15 +70,15 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'Result<$T>.success(success: $success)';
+  return 'Result<$T, $E>.success(success: $success)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $OkCopyWith<T,$Res> implements $ResultCopyWith<T, $Res> {
-  factory $OkCopyWith(Ok<T> value, $Res Function(Ok<T>) _then) = _$OkCopyWithImpl;
+abstract mixin class $SuccessCopyWith<T,E extends Exception,$Res> implements $ResultCopyWith<T, E, $Res> {
+  factory $SuccessCopyWith(Success<T, E> value, $Res Function(Success<T, E>) _then) = _$SuccessCopyWithImpl;
 @useResult
 $Res call({
  T success
@@ -89,17 +89,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$OkCopyWithImpl<T,$Res>
-    implements $OkCopyWith<T, $Res> {
-  _$OkCopyWithImpl(this._self, this._then);
+class _$SuccessCopyWithImpl<T,E extends Exception,$Res>
+    implements $SuccessCopyWith<T, E, $Res> {
+  _$SuccessCopyWithImpl(this._self, this._then);
 
-  final Ok<T> _self;
-  final $Res Function(Ok<T>) _then;
+  final Success<T, E> _self;
+  final $Res Function(Success<T, E>) _then;
 
 /// Create a copy of Result
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? success = freezed,}) {
-  return _then(Ok<T>(
+  return _then(Success<T, E>(
 freezed == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
 as T,
   ));
@@ -111,23 +111,23 @@ as T,
 /// @nodoc
 
 
-class Error<T> implements Result<T> {
+class Error<T,E extends Exception> implements Result<T, E> {
   const Error(this.error);
   
 
- final  T error;
+ final  E error;
 
 /// Create a copy of Result
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ErrorCopyWith<T, Error<T>> get copyWith => _$ErrorCopyWithImpl<T, Error<T>>(this, _$identity);
+$ErrorCopyWith<T, E, Error<T, E>> get copyWith => _$ErrorCopyWithImpl<T, E, Error<T, E>>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error<T>&&const DeepCollectionEquality().equals(other.error, error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error<T, E>&&const DeepCollectionEquality().equals(other.error, error));
 }
 
 
@@ -136,18 +136,18 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'Result<$T>.error(error: $error)';
+  return 'Result<$T, $E>.error(error: $error)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ErrorCopyWith<T,$Res> implements $ResultCopyWith<T, $Res> {
-  factory $ErrorCopyWith(Error<T> value, $Res Function(Error<T>) _then) = _$ErrorCopyWithImpl;
+abstract mixin class $ErrorCopyWith<T,E extends Exception,$Res> implements $ResultCopyWith<T, E, $Res> {
+  factory $ErrorCopyWith(Error<T, E> value, $Res Function(Error<T, E>) _then) = _$ErrorCopyWithImpl;
 @useResult
 $Res call({
- T error
+ E error
 });
 
 
@@ -155,19 +155,19 @@ $Res call({
 
 }
 /// @nodoc
-class _$ErrorCopyWithImpl<T,$Res>
-    implements $ErrorCopyWith<T, $Res> {
+class _$ErrorCopyWithImpl<T,E extends Exception,$Res>
+    implements $ErrorCopyWith<T, E, $Res> {
   _$ErrorCopyWithImpl(this._self, this._then);
 
-  final Error<T> _self;
-  final $Res Function(Error<T>) _then;
+  final Error<T, E> _self;
+  final $Res Function(Error<T, E>) _then;
 
 /// Create a copy of Result
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? error = freezed,}) {
-  return _then(Error<T>(
-freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
-as T,
+@pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+  return _then(Error<T, E>(
+null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as E,
   ));
 }
 
