@@ -9,10 +9,12 @@ class WeatherForecastUseCase {
       final weatherCondition = _yumemiWeather.fetchThrowsWeather(area);
       return Result.success(weatherCondition);
     } on YumemiWeatherError catch (e) {
-      return Result.error(switch (e) {
+      final message = switch (e) {
         YumemiWeatherError.invalidParameter => 'Invalid Parameter',
         YumemiWeatherError.unknown => 'Unknown',
-      });
+      };
+
+      return Result.error(message);
     } on Exception catch (e) {
       return Result.error('Unexpected Error: $e');
     }
