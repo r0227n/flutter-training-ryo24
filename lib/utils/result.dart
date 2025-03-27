@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'result.freezed.dart';
 
 @freezed
-sealed class Result<T> with _$Result<T> {
-  const factory Result.success(T success) = Ok<T>;
-  const factory Result.error(T error) = Error<T>;
+sealed class Result<T, E extends Exception> with _$Result<T, E> {
+  const factory Result.success(T success) = Success<T, E>;
+  const factory Result.error(E error) = Error<T, E>;
 }

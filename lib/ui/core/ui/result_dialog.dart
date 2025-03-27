@@ -8,10 +8,10 @@ class ResultDialog extends StatelessWidget {
   final String title;
   final String content;
 
-  static Future<bool?> show({
+  static Future<bool?> show<T>({
     required BuildContext context,
     required String title,
-    required Result<String> result,
+    required Result<T, Exception> result,
   }) {
     return showDialog(
       context: context,
@@ -19,8 +19,8 @@ class ResultDialog extends StatelessWidget {
           (ctx) => ResultDialog(
             title: title,
             content: switch (result) {
-              Ok<String>() => result.success,
-              Error<String>() => result.error,
+              Success<T, Exception>() => result.success.toString(),
+              Error<T, Exception>() => result.error.toString(),
             },
           ),
     );
