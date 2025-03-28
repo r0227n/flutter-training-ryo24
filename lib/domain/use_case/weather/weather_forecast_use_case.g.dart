@@ -7,7 +7,7 @@ part of 'weather_forecast_use_case.dart';
 // **************************************************************************
 
 String _$weatherForecastUseCaseHash() =>
-    r'1915a67df16e6fdcc6f2b5191b90c5fb54a09ddb';
+    r'4ba86913e099f218a3f5f23f1946d78b173e001c';
 
 /// See also [weatherForecastUseCase].
 @ProviderFor(weatherForecastUseCase)
