@@ -1,24 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_training/domain/models/weather.dart';
-import 'package:flutter_training/domain/use_case/weather/weather_forecast_use_case.dart';
 import 'package:flutter_training/ui/core/ui/result_dialog.dart';
+import 'package:flutter_training/ui/weather/view_model/weather_view_model.dart';
 import 'package:flutter_training/ui/weather/widgets/weather_icon.dart';
 import 'package:flutter_training/utils/result.dart';
 
-class WeatherPage extends StatefulWidget {
+class WeatherPage extends ConsumerWidget {
   const WeatherPage({super.key});
 
   @override
-  State<WeatherPage> createState() => _WeatherPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final weather = ref.watch(weatherViewModelProvider);
 
-class _WeatherPageState extends State<WeatherPage> {
-  Weather? _weather;
-  final _weatherUseCase = WeatherForecastUseCase();
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: FractionallySizedBox(
@@ -28,7 +23,7 @@ class _WeatherPageState extends State<WeatherPage> {
             children: [
               AspectRatio(
                 aspectRatio: 1,
-                child: WeatherIcon(svg: _weather?.weatherCondition),
+                child: WeatherIcon(svg: weather?.weatherCondition),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -36,7 +31,7 @@ class _WeatherPageState extends State<WeatherPage> {
                   children: [
                     Expanded(
                       child: Text(
-                        '${_weather?.minTemperature ?? '**'} ℃',
+                        '${weather?.minTemperature ?? '**'} ℃',
                         textAlign: TextAlign.center,
                         style: Theme.of(
                           context,
@@ -45,7 +40,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     ),
                     Expanded(
                       child: Text(
-                        '${_weather?.maxTemperature ?? '**'} ℃',
+                        '${weather?.maxTemperature ?? '**'} ℃',
                         textAlign: TextAlign.center,
                         style: Theme.of(
                           context,
@@ -70,26 +65,22 @@ class _WeatherPageState extends State<WeatherPage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          final weatherCondition = _weatherUseCase.getWeather(
-                            InputWeatherForecast(
-                              area: WeatherArea.tokyo,
-                              date: DateTime.parse('2020-04-01T12:00:00+09:00'),
-                            ),
-                          );
-
-                          switch (weatherCondition) {
-                            case Success<Weather, Exception>():
-                              setState(() {
-                                _weather = weatherCondition.success;
-                              });
-                            case Error<Weather, Exception>():
-                              unawaited(
-                                ResultDialog.show(
-                                  context: context,
-                                  title: 'title',
-                                  result: weatherCondition,
-                                ),
-                              );
+                          try {
+                            ref
+                                .read(weatherViewModelProvider.notifier)
+                                .updateWeather(
+                                  date: DateTime.parse(
+                                    '2020-04-01T12:00:00+09:00',
+                                  ),
+                                );
+                          } on Exception catch (e) {
+                            unawaited(
+                              ResultDialog.show<Weather>(
+                                context: context,
+                                title: 'title',
+                                result: Result.error(e),
+                              ),
+                            );
                           }
                         },
                         child: const Text('Reload'),

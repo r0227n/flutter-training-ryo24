@@ -13,7 +13,7 @@ part of 'result.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$Result<T,E extends Exception> {
+mixin _$Result<T,E> {
 
 
 
@@ -37,7 +37,7 @@ String toString() {
 }
 
 /// @nodoc
-class $ResultCopyWith<T,E extends Exception,$Res>  {
+class $ResultCopyWith<T,E,$Res>  {
 $ResultCopyWith(Result<T, E> _, $Res Function(Result<T, E>) __);
 }
 
@@ -45,7 +45,7 @@ $ResultCopyWith(Result<T, E> _, $Res Function(Result<T, E>) __);
 /// @nodoc
 
 
-class Success<T,E extends Exception> implements Result<T, E> {
+class Success<T,E> implements Result<T, E> {
   const Success(this.success);
   
 
@@ -77,7 +77,7 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class $SuccessCopyWith<T,E extends Exception,$Res> implements $ResultCopyWith<T, E, $Res> {
+abstract mixin class $SuccessCopyWith<T,E,$Res> implements $ResultCopyWith<T, E, $Res> {
   factory $SuccessCopyWith(Success<T, E> value, $Res Function(Success<T, E>) _then) = _$SuccessCopyWithImpl;
 @useResult
 $Res call({
@@ -89,7 +89,7 @@ $Res call({
 
 }
 /// @nodoc
-class _$SuccessCopyWithImpl<T,E extends Exception,$Res>
+class _$SuccessCopyWithImpl<T,E,$Res>
     implements $SuccessCopyWith<T, E, $Res> {
   _$SuccessCopyWithImpl(this._self, this._then);
 
@@ -111,7 +111,7 @@ as T,
 /// @nodoc
 
 
-class Error<T,E extends Exception> implements Result<T, E> {
+class Error<T,E> implements Result<T, E> {
   const Error(this.error);
   
 
@@ -143,7 +143,7 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class $ErrorCopyWith<T,E extends Exception,$Res> implements $ResultCopyWith<T, E, $Res> {
+abstract mixin class $ErrorCopyWith<T,E,$Res> implements $ResultCopyWith<T, E, $Res> {
   factory $ErrorCopyWith(Error<T, E> value, $Res Function(Error<T, E>) _then) = _$ErrorCopyWithImpl;
 @useResult
 $Res call({
@@ -155,7 +155,7 @@ $Res call({
 
 }
 /// @nodoc
-class _$ErrorCopyWithImpl<T,E extends Exception,$Res>
+class _$ErrorCopyWithImpl<T,E,$Res>
     implements $ErrorCopyWith<T, E, $Res> {
   _$ErrorCopyWithImpl(this._self, this._then);
 
@@ -164,9 +164,9 @@ class _$ErrorCopyWithImpl<T,E extends Exception,$Res>
 
 /// Create a copy of Result
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? error = freezed,}) {
   return _then(Error<T, E>(
-null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as E,
   ));
 }
