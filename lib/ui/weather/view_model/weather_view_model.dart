@@ -1,4 +1,5 @@
 import 'package:flutter_training/domain/models/weather.dart';
+import 'package:flutter_training/domain/models/weather_area.dart';
 import 'package:flutter_training/domain/use_case/weather/weather_forecast_use_case.dart';
 import 'package:flutter_training/utils/result.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,21 +13,18 @@ class WeatherViewModel extends _$WeatherViewModel {
     return null;
   }
 
-  void updateWeather({WeatherArea area = WeatherArea.tokyo, DateTime? date}) {
-    final input = InputWeatherForecast(
-      area: area,
-      date: date ?? DateTime.now(),
-    );
+  void updateWeather({WeatherCity city = WeatherCity.tokyo, DateTime? date}) {
+    final area = WeatherArea(date: date ?? DateTime.now(), city: city);
 
     final weatherCondition = ref
         .read(weatherForecastUseCaseProvider)
-        .getWeather(input);
+        .getWeather(area);
 
     switch (weatherCondition) {
-      case Success<Weather, Exception>():
+      case Success<Weather, String>():
         state = weatherCondition.success;
-      case Error<Weather, Exception>():
-        throw weatherCondition.error;
+      case Error<Weather, String>():
+        throw Exception(weatherCondition.error);
     }
   }
 }
