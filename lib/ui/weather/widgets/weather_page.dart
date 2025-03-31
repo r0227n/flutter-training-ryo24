@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_training/domain/models/weather.dart';
 import 'package:flutter_training/ui/core/ui/result_dialog.dart';
 import 'package:flutter_training/ui/weather/view_model/weather_view_model.dart';
-import 'package:flutter_training/ui/weather/widgets/weather_icon.dart';
+import 'package:flutter_training/ui/weather/widgets/weather_forecast.dart';
 import 'package:flutter_training/utils/result.dart';
 
 class WeatherPage extends ConsumerWidget {
@@ -21,35 +21,7 @@ class WeatherPage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: WeatherIcon(svg: weather?.weatherCondition),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${weather?.minTemperature ?? '**'} ℃',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.labelLarge?.copyWith(color: Colors.blue),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '${weather?.maxTemperature ?? '**'} ℃',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.labelLarge?.copyWith(color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              WeatherForecast(weather),
               Padding(
                 padding: const EdgeInsets.only(top: 80),
                 child: Row(
